@@ -1869,14 +1869,14 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;header class=&quot;ra-header&quot;&gt;
       &lt;div class=&quot;ra-eyebrow&quot;&gt;Пример агрегационного отчёта&lt;/div&gt;
       &lt;h2 id=&quot;ra-full-example-title&quot;&gt;Исходы обращений&lt;/h2&gt;
-      &lt;p class=&quot;ra-subtitle&quot;&gt;Полная структура отчёта контакт-центра&lt;/p&gt;
+      &lt;p class=&quot;ra-subtitle&quot;&gt;Полная структура отчёта контакт-центра · демонстрационные данные&lt;/p&gt;
     &lt;/header&gt;
     &lt;table class=&quot;ra-table&quot; aria-describedby=&quot;ra-full-example-note&quot;&gt;
       &lt;colgroup&gt;&lt;col&gt;&lt;col class=&quot;ra-number-col&quot;&gt;&lt;col class=&quot;ra-share-col&quot;&gt;&lt;/colgroup&gt;
       &lt;thead&gt;&lt;tr&gt;&lt;th scope=&quot;col&quot;&gt;Строка отчёта&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;Диалоги&lt;/th&gt;&lt;th scope=&quot;col&quot;&gt;Доля от родителя&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
       &lt;tbody&gt;&lt;/tbody&gt;
     &lt;/table&gt;
-    &lt;footer class=&quot;ra-footer&quot; id=&quot;ra-full-example-note&quot;&gt;Прочерк — в примере не приведено значение.&lt;/footer&gt;
+    &lt;footer class=&quot;ra-footer&quot; id=&quot;ra-full-example-note&quot;&gt;Доля рассчитана от ближайшей родительской строки и округлена до десятых.&lt;/footer&gt;
   &lt;/section&gt;
 &lt;/div&gt;
 &lt;style&gt;
@@ -1901,9 +1901,10 @@ html&gt;body{padding:0}&lt;/style&gt;
   #ra-full-report-example th:first-child { text-align:left; padding-left:14px; padding-right:5px; }
   #ra-full-report-example thead th { background:var(--ra-tint); font-size:12px; font-weight:650; padding-block:8px; }
   #ra-full-report-example tbody th { font-weight:400; }
-  #ra-full-report-example td { color:var(--ra-muted); }
+  #ra-full-report-example td { font-variant-numeric:tabular-nums; white-space:nowrap; }
+  #ra-full-report-example td:last-child { color:var(--ra-muted); }
   #ra-full-report-example .ra-main { background:var(--ra-band); }
-  #ra-full-report-example .ra-parent th { font-weight:650; }
+  #ra-full-report-example .ra-parent th, #ra-full-report-example .ra-parent td:nth-child(2) { font-weight:650; }
   #ra-full-report-example .ra-row-label { display:flex; align-items:center; gap:4px; padding-left:calc(var(--ra-level) * 14px); overflow-wrap:anywhere; min-height:22px; }
   #ra-full-report-example .ra-toggle, #ra-full-report-example .ra-connector { flex:0 0 20px; width:20px; height:24px; display:grid; place-items:center; }
   #ra-full-report-example .ra-toggle { border:0; padding:0; border-radius:4px; background:transparent; color:var(--ra-accent); }
@@ -1933,39 +1934,47 @@ html&gt;body{padding:0}&lt;/style&gt;
   const body = root.querySelector(&#x27;tbody&#x27;);
   const tree = [&#x27;all&#x27;, &#x27;Обращения&#x27;, [
     [&#x27;unknown&#x27;, &#x27;Направление не определено&#x27;, [
-      [&#x27;chat&#x27;, &#x27;Предложение чата — клиент не написал&#x27;]
+      [&#x27;chat&#x27;, &#x27;Предложение чата — клиент не написал&#x27;, 800]
     ]],
     [&#x27;known&#x27;, &#x27;Направление определено&#x27;, [
       [&#x27;cc&#x27;, &#x27;Обращения в КЦ&#x27;, [
         [&#x27;resolved&#x27;, &#x27;Бот решил&#x27;, [
-          [&#x27;resolved-client&#x27;, &#x27;Завершил клиент&#x27;], [&#x27;resolved-bot&#x27;, &#x27;Завершил бот&#x27;]
+          [&#x27;resolved-client&#x27;, &#x27;Завершил клиент&#x27;, 2560], [&#x27;resolved-bot&#x27;, &#x27;Завершил бот&#x27;, 640]
         ]],
         [&#x27;unresolved&#x27;, &#x27;Бот не решил&#x27;, [
-          [&#x27;unresolved-client&#x27;, &#x27;Завершил клиент — ответа не было&#x27;],
-          [&#x27;unresolved-bot&#x27;, &#x27;Завершил бот без решения&#x27;],
+          [&#x27;unresolved-client&#x27;, &#x27;Завершил клиент — ответа не было&#x27;, 1100],
+          [&#x27;unresolved-bot&#x27;, &#x27;Завершил бот без решения&#x27;, 500],
           [&#x27;transfer&#x27;, &#x27;Перевод на оператора&#x27;, [
-            [&#x27;auto&#x27;, &#x27;Автоперевод без обработки&#x27;], [&#x27;error&#x27;, &#x27;Ошибка интеграции&#x27;],
-            [&#x27;no-script&#x27;, &#x27;Нет подходящего сценария&#x27;], [&#x27;tried&#x27;, &#x27;Пытался решить с ботом&#x27;],
+            [&#x27;auto&#x27;, &#x27;Автоперевод без обработки&#x27;, 180], [&#x27;error&#x27;, &#x27;Ошибка интеграции&#x27;, 120],
+            [&#x27;no-script&#x27;, &#x27;Нет подходящего сценария&#x27;, 350], [&#x27;tried&#x27;, &#x27;Пытался решить с ботом&#x27;, 1350],
             [&#x27;asked&#x27;, &#x27;Запросил оператора&#x27;, [
-              [&#x27;chance&#x27;, &#x27;Дал шанс боту&#x27;], [&#x27;no-chance&#x27;, &#x27;Не дал шанс боту&#x27;]
+              [&#x27;chance&#x27;, &#x27;Дал шанс боту&#x27;, 420], [&#x27;no-chance&#x27;, &#x27;Не дал шанс боту&#x27;, 280]
             ]]
           ]]
         ]],
-        [&#x27;empty&#x27;, &#x27;Клиент не пользовался ботом&#x27;], [&#x27;conflict&#x27;, &#x27;Конфликт исходов&#x27;]
+        [&#x27;empty&#x27;, &#x27;Клиент не пользовался ботом&#x27;, 450], [&#x27;conflict&#x27;, &#x27;Конфликт исходов&#x27;, 50]
       ]],
-      [&#x27;non-cc&#x27;, &#x27;Обращения не в КЦ&#x27;, [[&#x27;tm&#x27;, &#x27;ТМ&#x27;], [&#x27;fraud&#x27;, &#x27;Фрод&#x27;]]]
+      [&#x27;non-cc&#x27;, &#x27;Обращения не в КЦ&#x27;, [[&#x27;tm&#x27;, &#x27;ТМ&#x27;, 1000], [&#x27;fraud&#x27;, &#x27;Фрод&#x27;, 200]]]
     ]]
   ]];
 
   let closed = new Set();
   const rows = [];
+  const counts = new Intl.NumberFormat(&#x27;ru-RU&#x27;);
+  const shares = new Intl.NumberFormat(&#x27;ru-RU&#x27;, {style:&#x27;percent&#x27;, maximumFractionDigits:1});
+  function withTotals([id, label, entries]) {
+    if (typeof entries === &#x27;number&#x27;) return {id, label, count:entries, children:[]};
+    const children = entries.map(withTotals);
+    const count = children.reduce((sum, child) =&gt; sum + child.count, 0);
+    return {id, label, count, children};
+  }
   function el(tag, text, className) {
     const element = document.createElement(tag);
     if (text !== undefined) element.textContent = text;
     if (className) element.className = className;
     return element;
   }
-  function add([id, label, children = []], parents = []) {
+  function add({id, label, count, children}, parents = [], parentCount = 0) {
     const row = el(&#x27;tr&#x27;);
     row.dataset.node = id;
     row.dataset.depth = String(parents.length);
@@ -1997,10 +2006,11 @@ html&gt;body{padding:0}&lt;/style&gt;
     }
     wrap.append(el(&#x27;span&#x27;, label));
     title.append(wrap);
-    row.append(title, el(&#x27;td&#x27;, &#x27;—&#x27;), el(&#x27;td&#x27;, &#x27;—&#x27;));
+    const share = parentCount &gt; 0 ? shares.format(count / parentCount) : &#x27;—&#x27;;
+    row.append(title, el(&#x27;td&#x27;, counts.format(count)), el(&#x27;td&#x27;, share));
     body.append(row);
     rows.push({row, button, id, label, parents});
-    children.forEach(child =&gt; add(child, [...parents, id]));
+    children.forEach(child =&gt; add(child, [...parents, id], count));
   }
   function paint() {
     for (const {row, button, id, label, parents} of rows) {
@@ -2017,7 +2027,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     if (Array.isArray(saved)) closed = new Set(rows.filter(r =&gt; r.button &amp;&amp; saved.includes(r.id)).map(r =&gt; r.id));
     paint();
   }
-  add(tree);
+  add(withTotals(tree));
   restore(window.openai?.widgetState);
   window.addEventListener(&#x27;openai:set_globals&#x27;, event =&gt; restore(event.detail?.globals?.widgetState));
 })();
